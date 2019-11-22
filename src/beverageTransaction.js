@@ -37,7 +37,17 @@ const saveDetails = function(beverageDetails) {
 };
 
 const giveConsumerDetail = function(beverageDetails) {
-  return;
+  const consumerList = JSON.parse(
+    fs.readFileSync("./consumedList.json", "utf8")
+  );
+  const employeeRecord = consumerList.filter(function(consumerRecord) {
+    return consumerRecord.includes(beverageDetails[2]);
+  });
+  const message = consumerList[0] + "\n" + employeeRecord;
+  return message;
 };
 
 exports.transactionRecorder = transactionRecorder;
+exports.desireInput = desireInput;
+exports.saveDetails = saveDetails;
+exports.giveConsumerDetail = giveConsumerDetail;

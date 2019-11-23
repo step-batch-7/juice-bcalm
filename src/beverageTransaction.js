@@ -36,14 +36,30 @@ const saveDetails = function(beverageDetails) {
   return message;
 };
 
+const juiceCount = function(count, employeeOrder) {
+  count += +employeeOrder[2];
+  return count;
+};
+
 const giveConsumerDetail = function(beverageDetails) {
   const consumerList = JSON.parse(
     fs.readFileSync("./consumedList.json", "utf8")
   );
+
   const employeeRecord = consumerList.filter(function(consumerRecord) {
     return consumerRecord.includes(beverageDetails[2]);
   });
-  const message = consumerList[0] + "\n" + employeeRecord;
+
+  const totalJuice = employeeRecord.reduce(juiceCount, 0);
+  const message =
+    consumerList[0] +
+    "\n" +
+    employeeRecord.join("\n") +
+    "\n" +
+    "Total:" +
+    totalJuice +
+    "juices";
+
   return message;
 };
 

@@ -1,1 +1,5 @@
 node_modules/
+.nyc_output
+.vscode
+fakeConsumedList.json
+dummy.js

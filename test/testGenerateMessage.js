@@ -24,15 +24,3 @@ describe("generateSaveMessage", function() {
     assert.strictEqual(actual, expected);
   });
 });
-
-describe("generateBeverageInfo", function() {
-  it("should give which and how many beverage and at what time", function() {
-    const actual = messages.generateBeverageInfo("25348", [
-      "orange",
-      "1",
-      "24/11/2019"
-    ]);
-    const expected = "\n25348,orange,1,24/11/2019\n";
-    assert.strictEqual(actual, expected);
-  });
-});

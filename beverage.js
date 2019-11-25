@@ -1,9 +1,10 @@
-const transactionRecorder = require("./src/beverageTransaction.js")
-  .transactionRecorder;
+const performAction = require("./src/beverageTransaction.js").performAction;
 
 const main = function() {
-  const beverageDetails = process.argv.slice(2);
-  return transactionRecorder(beverageDetails);
+  const filePath = "./consumedList.json";
+  const userArguments = process.argv.slice(2);
+  const message = performAction(filePath, userArguments);
+  return message;
 };
 
 console.log(main());

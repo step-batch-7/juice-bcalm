@@ -21,6 +21,16 @@ describe("generateQueryDetails", function() {
       "Employee ID, Beverage, Quantity, Date\n25348,undefined,2,26/11/2019\nTotal:2 juices";
     assert.strictEqual(actual, expected);
   });
+
+  it("should return no record when employee didn't take any beverage", function() {
+    const actual = query.generateQueryDetails({}, [
+      "--query",
+      "empId",
+      "25348"
+    ]);
+    const expected = "No Record Found";
+    assert.strictEqual(actual, expected);
+  });
 });
 
 describe("extractTransactionValues", function() {

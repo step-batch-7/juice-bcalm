@@ -17,7 +17,6 @@ const performAction = function(filePath, fileFunctions, userArguments, date) {
   const isFileExist = fileFunctions["existsFile"];
   const parseFile = fileFunctions["readFile"];
   const action = userArguments[0];
-  date = JSON.stringify(date());
   const fileContents = generateFileContents(filePath, parseFile, isFileExist);
   if (userArguments[0] == "--save") {
     let record = saveTransaction(fileContents, userArguments, date);

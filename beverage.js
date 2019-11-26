@@ -7,7 +7,7 @@ const generateDate = function() {
 
 const main = function() {
   const userArguments = process.argv.slice(2);
-  const date = generateDate;
+  const date = generateDate().toJSON();
   const filePath = "./consumedList.json";
   const fileFunctions = {
     readFile: fs.readFileSync,

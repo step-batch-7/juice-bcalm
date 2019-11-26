@@ -27,7 +27,8 @@ describe("generateFileContents", function() {
         assert.strictEqual(encode, "utf8");
         return '{"key": "value"}';
       },
-      function() {
+      function(path) {
+        assert.strictEqual(path, "path");
         return true;
       }
     );
@@ -50,5 +51,80 @@ describe("writeTransactions", function() {
       callTimes++;
     });
     assert.strictEqual(callTimes, 1);
+  });
+});
+
+describe("performAction", function() {
+  it("should return transaction recorded message when employee save something", function() {
+    let callTimes = 0;
+    const userArguments = [
+      "--save",
+      "beverage",
+      "orange",
+      "--empId",
+      "25348",
+      "qty",
+      "1"
+    ];
+    const fileFunctions = {
+      writeFile: (path, content, encode) => {
+        assert.strictEqual(path, "path");
+        assert.strictEqual(
+          content,
+          '{"25348":{"beverageList":[{"beverageName":"orange","empId":"25348","qty":"1","date":"26/11/2019"}],"count":1}}'
+        );
+        assert.strictEqual(encode, "utf8");
+        callTimes++;
+      },
+      readFile: (path, encode) => {
+        assert.strictEqual(path, "path");
+        assert.strictEqual(encode, "utf8");
+        return "{}";
+      },
+      existsFile: path => {
+        assert.strictEqual(path, "path");
+        return true;
+      }
+    };
+
+    const date = "26/11/2019";
+
+    const actual = utils.performAction(
+      "path",
+      fileFunctions,
+      userArguments,
+      date
+    );
+    const expected =
+      "Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n25348,orange,1,26/11/2019";
+    assert.strictEqual(actual, expected);
+    assert.strictEqual(callTimes, 1);
+  });
+
+  it("should return transaction detail of empolyee", function() {
+    const userArguments = ["--query", "--empId", "25348"];
+    const fileFunctions = {
+      readFile: (path, encode) => {
+        assert.strictEqual(path, "path");
+        assert.strictEqual(encode, "utf8");
+        return '{"25348":{"beverageList":[]}}';
+      },
+      existsFile: path => {
+        assert.strictEqual(path, "path");
+        return true;
+      }
+    };
+
+    const date = "26/11/2019";
+
+    const actual = utils.performAction(
+      "path",
+      fileFunctions,
+      userArguments,
+      date
+    );
+    const expected =
+      "Employee ID, Beverage, Quantity, Date\nTotal:undefined juices";
+    assert.strictEqual(actual, expected);
   });
 });

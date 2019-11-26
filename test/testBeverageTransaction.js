@@ -1,32 +1,54 @@
+const utils = require("../src/beverageTransaction.js");
 const assert = require("assert");
-const extractTransactionValues = require("../src/query.js")
-  .extractTransactionValues;
-const whichAction = require("../src/beverageTransaction.js").whichAction;
-const generateQueryDetails = require("../src/query.js").generateQueryDetails;
-const saveTransactionEntry = require("../src/saveTransaction.js")
-  .saveTransactionEntry;
 
-describe("whichAction", function() {
-  it("should give which action has to perform", function() {
-    let actual = whichAction("--save");
-    let expected = saveTransactionEntry;
-    assert.strictEqual(actual, expected);
+describe("generateFileContents", function() {
+  it("should give empty object if file is not exists", function() {
+    const actualValue = utils.generateFileContents(
+      "./NoFile",
+      function(arg1, arg2) {
+        assert.strictEqual(arg1, "./NoFile");
+        assert.strictEqual(arg2, "utf8");
+        return '{"key":"value"}';
+      },
+      function(arg) {
+        assert.strictEqual(arg, "./NoFile");
+        return false;
+      }
+    );
+    const expectedValue = {};
+    assert.deepStrictEqual(actualValue, expectedValue);
+  });
 
-    actual = whichAction("--query");
-    expected = generateQueryDetails;
-    assert.deepStrictEqual(actual, expected);
+  it("should give content of the file with true flag if file exists", function() {
+    const actualValue = utils.generateFileContents(
+      "path",
+      function(path, encode) {
+        assert.strictEqual(path, "path");
+        assert.strictEqual(encode, "utf8");
+        return '{"key": "value"}';
+      },
+      function() {
+        return true;
+      }
+    );
+    const expectedValue = { key: "value" };
+    assert.deepStrictEqual(actualValue, expectedValue);
   });
 });
 
-describe("extractTransactionValues", function() {
-  it("should extract the value and return needed value", function() {
-    const transaction = {
-      beverageName: "hello",
-      qty: 1,
-      date: "24/11/2019"
-    };
-    const actual = extractTransactionValues(transaction);
-    const expected = "hello,1,24/11/2019";
-    assert.strictEqual(actual, expected);
+describe("writeTransactions", function() {
+  it("should make JSON string version of the content and give it to write func", function() {
+    let callTimes = 0;
+    utils.writeTransaction("path", [{ msg: "Hi" }], function(
+      path,
+      content,
+      encode
+    ) {
+      assert.strictEqual(path, "path");
+      assert.deepStrictEqual(content, '[{"msg":"Hi"}]');
+      assert.strictEqual(encode, "utf8");
+      callTimes++;
+    });
+    assert.strictEqual(callTimes, 1);
   });
 });

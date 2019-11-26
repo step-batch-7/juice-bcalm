@@ -1,3 +1,5 @@
+const messages = require("./generateMessage.js");
+
 const extractTransactionValues = function(transaction) {
   const beverageName = transaction["beverageName"];
   const qty = transaction["qty"];
@@ -5,8 +7,7 @@ const extractTransactionValues = function(transaction) {
   return beverageName + "," + qty + "," + date;
 };
 
-const generateQueryDetails = function(filePath, userArguments) {
-  const transactionRecords = JSON.parse(utils.parseFile(filePath));
+const generateQueryDetails = function(transactionRecords, userArguments) {
   const empId = userArguments[2];
   if (transactionRecords[empId] == undefined) {
     return "No Record Found";

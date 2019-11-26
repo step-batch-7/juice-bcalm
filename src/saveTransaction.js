@@ -1,45 +1,31 @@
-const updateEntry = function(filePath, beverageName, empId, qty, date) {
-  const record = JSON.parse(utils.parseFile(filePath));
-  const empIds = Object.keys(record);
-  if (!empIds.includes(empId)) {
-    record[empId] = {};
-    record[empId]["beverageList"] = [];
+const messages = require("./generateMessage.js");
+
+const addBeverageDetail = function(records, beverageDetail) {
+  records[beverageDetail.empId]["beverageList"].push(beverageDetail);
+  const count = records[beverageDetail.empId]["count"] || 0;
+  records[beverageDetail.empId]["count"] = count + +beverageDetail["qty"];
+  return records;
+};
+
+const generateRecords = function(records, beverageDetail) {
+  const empIds = Object.keys(records);
+  if (!empIds.includes(beverageDetail.empId)) {
+    records[beverageDetail.empId] = {};
+    records[beverageDetail.empId].beverageList = [];
   }
-  return addBeverageDetail(record, empId, qty, date);
+  return addBeverageDetail(records, beverageDetail);
 };
 
-const addBeverageDetail = function(record, empId, qty, date) {
-  record[empId]["beverageList"].push({ beverageName, qty: qty, date });
-  const count = record[empId]["count"] || 0;
-  record[empId]["count"] = count + +qty;
-  return record;
+const saveTransaction = function(records, userArguments, date) {
+  const beverageDetail = {
+    beverageName: userArguments[2],
+    empId: userArguments[4],
+    qty: userArguments[6],
+    date: date
+  };
+  return generateRecords(records, beverageDetail);
 };
 
-const generateRecords = function(filePath, beverageName, empId, qty) {
-  const date = JSON.stringify(utils.generateDate());
-  let record = {};
-  if (utils.isFileExists(filePath)) {
-    record = updateEntry(filePath, beverageName, empId, qty, date);
-  } else {
-    record[empId] = {};
-    record[empId]["beverageList"] = [];
-    record = addBeverageDetail(record, empId, qty, date);
-  }
-  return record;
-};
-
-const saveTransactionEntry = function(filePath, userArguments) {
-  const beverageName = userArguments[2];
-  const empId = userArguments[4];
-  const qty = userArguments[6];
-  const transactions = generateRecords(filePath, beverageName, empId, qty);
-  utils.writeFile(filePath, transactions);
-  const date = JSON.stringify(utils.generateDate());
-  const message = messages.generateSaveMessage(empId, beverageName, qty, date);
-  return message;
-};
-
-exports.saveTransactionEntry = saveTransactionEntry;
+exports.saveTransaction = saveTransaction;
 exports.generateRecords = generateRecords;
 exports.addBeverageDetail = addBeverageDetail;
-exports.updateEntry = updateEntry;

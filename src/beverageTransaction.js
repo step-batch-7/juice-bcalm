@@ -1,23 +1,32 @@
-const saveTransactionEntry = require("./saveTransaction.js")
-  .saveTransactionEntry;
+const saveTransaction = require("./saveTransaction.js").saveTransaction;
 const generateQueryDetails = require("./query.js").generateQueryDetails;
-
 const messages = require("./generateMessage.js");
-const utils = require("./utilsFunction.js");
 
-const performAction = function(filePath, userArguments) {
-  const action = userArguments[0];
-  const transactionAction = whichAction(action);
-  return transactionAction(filePath, userArguments);
+const generateFileContents = function(filePath, parseFile, isFileExist) {
+  let fileContents =
+    isFileExist(filePath, "utf8") && parseFile(filePath, "utf8");
+  return JSON.parse(fileContents) || {};
 };
 
-const whichAction = function(action) {
-  const actions = {
-    "--save": saveTransactionEntry,
-    "--query": generateQueryDetails
-  };
-  return actions[action];
+const writeTransaction = function(filePath, contents, writeFile) {
+  const stringForm = JSON.stringify(contents);
+  return writeFile(filePath, stringForm, "utf8");
+};
+
+const performAction = function(filePath, fileFunctions, userArguments, date) {
+  const isFileExist = fileFunctions["existsFile"];
+  const parseFile = fileFunctions["readFile"];
+  const action = userArguments[0];
+  date = JSON.stringify(date());
+  const fileContents = generateFileContents(filePath, parseFile, isFileExist);
+  if (userArguments[0] == "--save") {
+    let record = saveTransaction(fileContents, userArguments, date);
+    writeTransaction(filePath, record, fileFunctions["writeFile"]);
+    return messages.generateSaveMessage(userArguments, date);
+  }
+  return generateQueryDetails(fileContents, userArguments);
 };
 
 exports.performAction = performAction;
-exports.whichAction = whichAction;
+exports.writeTransaction = writeTransaction;
+exports.generateFileContents = generateFileContents;

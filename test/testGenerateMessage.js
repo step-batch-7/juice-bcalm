@@ -13,14 +13,18 @@ describe("generateQueryMessage", function() {
 
 describe("generateSaveMessage", function() {
   it("should return transaction of specific user", function() {
-    const actual = messages.generateSaveMessage(
-      "25348",
-      "orange",
-      "2",
-      "24/11/2019"
-    );
+    const userArguments = [
+      "--save",
+      "--beverage",
+      "Orange",
+      "--empId",
+      "11111",
+      "--qty",
+      "1"
+    ];
+    const actual = messages.generateSaveMessage(userArguments, "24/11/2019");
     const expected =
-      "Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n25348,orange,2,24/11/2019";
+      "Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n11111,Orange,1,24/11/2019";
     assert.strictEqual(actual, expected);
   });
 });

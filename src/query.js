@@ -42,6 +42,11 @@ const filterEmpOfDate = function(transactionRecords, date, empId) {
   return transactionRecords;
 };
 
+const filterEmpBevDetail = function(transactionRecords, empId) {
+  transactionRecords = transactionRecords.filter(e => e["empId"] == empId);
+  return transactionRecords;
+};
+
 const generateQueryDetails = function(transactionRecords, userArguments) {
   const structuredUserArguments = createUserArgumentsObjet(userArguments);
   let empId = structuredUserArguments["--empId"];
@@ -49,11 +54,13 @@ const generateQueryDetails = function(transactionRecords, userArguments) {
   const beverageRecords = getBeverageRecordList(transactionRecords);
   if (date != undefined) {
     transactionRecords = filterEmpOfDate(beverageRecords, date, empId);
+    return messages.generateQueryMessage(transactionRecords);
   }
   if (date == undefined && empId == undefined) {
     return "No Record Found";
   }
-  return messages.generateQueryMessage(transactionRecords, empId);
+  transactionRecords = filterEmpBevDetail(beverageRecords, empId);
+  return messages.generateQueryMessage(transactionRecords);
 };
 
 exports.generateQueryDetails = generateQueryDetails;

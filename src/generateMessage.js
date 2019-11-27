@@ -8,15 +8,25 @@ const generateSaveMessage = function(userArguments, date) {
   return message;
 };
 
-const generateQueryMessage = function(empId, queryDetails, count) {
-  let message = "Employee ID, Beverage, Quantity, Date";
-  message += queryDetails
-    .map(function(transaction) {
-      return "\n" + empId + "," + transaction;
-    })
-    .join(" ");
-  message += "\n" + "Total:" + count + " juices";
+const createHeader = function() {
+  return "Employee ID, Beverage, Quantity, Date";
+};
+
+const giveBeverageDetails = function(transactionRecords) {
+  let message = "\n" + transactionRecords["empId"];
+  message += "," + transactionRecords["beverageName"];
+  message += "," + transactionRecords["qty"];
+  message += "," + transactionRecords["date"];
   return message;
+};
+
+const generateQueryMessage = function(transactionRecords) {
+  const header = createHeader();
+  const message = transactionRecords.map(giveBeverageDetails);
+  const count = transactionRecords.reduce(function(c, e) {
+    return c + +e["qty"];
+  }, 0);
+  return header + message + "\n" + "Total:" + count + "Juices";
 };
 
 exports.generateQueryMessage = generateQueryMessage;

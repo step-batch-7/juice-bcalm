@@ -1,6 +1,6 @@
 const messages = require("./generateMessage.js");
 
-const createUserArgumentsObjet = function(userArguments) {
+const createUserArgumentsObject = function(userArguments) {
   const structuredArgs = {};
   structuredArgs[userArguments[1]] = userArguments[2];
   structuredArgs[userArguments[3]] = userArguments[4];
@@ -34,11 +34,10 @@ const filterDate = function(date) {
 
 const filterEmpOfDate = function(transactionRecords, date, empId) {
   date = new Date(date).toLocaleDateString();
-  const filterDates = transactionRecords.filter(filterDate(date));
+  transactionRecords = transactionRecords.filter(filterDate(date));
   if (empId != undefined) {
-    transactionRecords = filterDates.filter(e => e["empId"] == empId);
+    transactionRecords = transactionRecords.filter(e => e["empId"] == empId);
   }
-
   return transactionRecords;
 };
 
@@ -48,19 +47,25 @@ const filterEmpBevDetail = function(transactionRecords, empId) {
 };
 
 const generateQueryDetails = function(transactionRecords, userArguments) {
-  const structuredUserArguments = createUserArgumentsObjet(userArguments);
+  const structuredUserArguments = createUserArgumentsObject(userArguments);
   let empId = structuredUserArguments["--empId"];
   const date = structuredUserArguments["--date"];
   const beverageRecords = getBeverageRecordList(transactionRecords);
+  if (date == undefined && empId == undefined) {
+    return "No Record Found";
+  }
   if (date != undefined) {
     transactionRecords = filterEmpOfDate(beverageRecords, date, empId);
     return messages.generateQueryMessage(transactionRecords);
-  }
-  if (date == undefined && empId == undefined) {
-    return "No Record Found";
   }
   transactionRecords = filterEmpBevDetail(beverageRecords, empId);
   return messages.generateQueryMessage(transactionRecords);
 };
 
+exports.filterEmpBevDetail = filterEmpBevDetail;
+exports.filterEmpOfDate = filterEmpOfDate;
+exports.filterDate = filterDate;
+exports.getBeverageRecordList = getBeverageRecordList;
+exports.beverageList = beverageList;
+exports.createUserArgumentsObject = createUserArgumentsObject;
 exports.generateQueryDetails = generateQueryDetails;

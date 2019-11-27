@@ -21,7 +21,6 @@ const giveBeverageDetails = function(transactionRecords) {
 };
 
 const generateQueryMessage = function(transactionRecords) {
-  console.log(transactionRecords);
   const header = createHeader();
   const message = transactionRecords.map(giveBeverageDetails);
   const count = transactionRecords.reduce(function(c, e) {
@@ -30,5 +29,7 @@ const generateQueryMessage = function(transactionRecords) {
   return header + message + "\n" + "Total:" + count + "Juices";
 };
 
+exports.createHeader = createHeader;
+exports.giveBeverageDetails = giveBeverageDetails;
 exports.generateQueryMessage = generateQueryMessage;
 exports.generateSaveMessage = generateSaveMessage;

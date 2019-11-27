@@ -3,10 +3,34 @@ const assert = require("assert");
 
 describe("generateQueryMessage", function() {
   it("should generate the query message for which user wants details", function() {
-    const queryDetails = ["orange,1,24/11/2019"];
-    const actual = messages.generateQueryMessage("25348", queryDetails, "3");
+    const transactionRecord = [
+      { beverageName: "orange", qty: "1", empId: "25348", date: "24/11/2019" }
+    ];
+    const actual = messages.generateQueryMessage(transactionRecord);
     const expected =
-      "Employee ID, Beverage, Quantity, Date\n25348,orange,1,24/11/2019\nTotal:3 juices";
+      "Employee ID, Beverage, Quantity, Date\n25348,orange,1,24/11/2019\nTotal:1Juices";
+    assert.strictEqual(actual, expected);
+  });
+});
+
+describe("createHeader", function() {
+  it("should create title which is given in returning details", function() {
+    const actual = messages.createHeader();
+    const expected = "Employee ID, Beverage, Quantity, Date";
+    assert.strictEqual(actual, expected);
+  });
+});
+
+describe("giveBeverageDetails", function() {
+  it("should return beverage details", function() {
+    const transactionRecord = {
+      beverageName: "orange",
+      qty: "1",
+      empId: "25348",
+      date: "24/11/2019"
+    };
+    const actual = messages.giveBeverageDetails(transactionRecord);
+    const expected = "\n25348,orange,1,24/11/2019";
     assert.strictEqual(actual, expected);
   });
 });

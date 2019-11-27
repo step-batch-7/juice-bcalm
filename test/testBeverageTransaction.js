@@ -123,8 +123,7 @@ describe("performAction", function() {
       userArguments,
       date
     );
-    const expected =
-      "Employee ID, Beverage, Quantity, Date\nTotal:undefined juices";
+    const expected = "Employee ID, Beverage, Quantity, Date\nTotal:0Juices";
     assert.strictEqual(actual, expected);
   });
 });

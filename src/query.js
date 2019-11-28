@@ -4,6 +4,7 @@ const createUserArgumentsObject = function(userArguments) {
   const structuredArgs = {};
   structuredArgs[userArguments[1]] = userArguments[2];
   structuredArgs[userArguments[3]] = userArguments[4];
+  structuredArgs[userArguments[5]] = userArguments[6];
   return structuredArgs;
 };
 
@@ -25,47 +26,60 @@ const getBeverageRecordList = function(transactionRecords) {
   return beverageRecordList;
 };
 
-const filterDate = function(date) {
-  return function(transactionRecord) {
-    const oldDate = new Date(transactionRecord["date"]).toLocaleDateString();
-    return oldDate == date;
+const matchDate = function(oldDate, currentDate) {
+  oldDate = new Date(oldDate).toLocaleDateString();
+  currentDate = new Date(currentDate).toLocaleDateString();
+  return oldDate == currentDate;
+};
+
+const transactionList = function(filterBy, filterWith) {
+  return function(transaction) {
+    if (filterWith == "date") {
+      return matchDate(transaction[filterWith], filterBy);
+    }
+    return transaction[filterWith] == filterBy;
   };
 };
 
-const filterEmpOfDate = function(transactionRecords, date, empId) {
-  date = new Date(date).toLocaleDateString();
-  transactionRecords = transactionRecords.filter(filterDate(date));
-  if (empId != undefined) {
-    transactionRecords = transactionRecords.filter(e => e["empId"] == empId);
-  }
-  return transactionRecords;
+const filterList = function(transactionRecords, filterBy, filterWith) {
+  const filteredList = transactionRecords.filter(
+    transactionList(filterBy, filterWith)
+  );
+  return filteredList;
 };
 
-const filterEmpBevDetail = function(transactionRecords, empId) {
-  transactionRecords = transactionRecords.filter(e => e["empId"] == empId);
-  return transactionRecords;
+const filterTransactionList = function(transactionRecords, queryData) {
+  console.log(transactionRecords, queryData);
+  const date = queryData["date"];
+  const empId = queryData["empId"];
+  const beverage = queryData["beverageName"];
+  const filterByDate =
+    (date && filterList(transactionRecords, date, "date")) ||
+    transactionRecords;
+  const filterByBeverage =
+    (beverage && filterList(filterByDate, beverage, "beverageName")) ||
+    filterByDate;
+  const filterByEmpId =
+    (empId && filterList(filterByBeverage, empId, "empId")) || filterByBeverage;
+  return filterByEmpId;
 };
 
 const generateQueryDetails = function(transactionRecords, userArguments) {
   const structuredUserArguments = createUserArgumentsObject(userArguments);
-  let empId = structuredUserArguments["--empId"];
+  const empId = structuredUserArguments["--empId"];
   const date = structuredUserArguments["--date"];
+  const beverageName = structuredUserArguments["--beverage"];
   const beverageRecords = getBeverageRecordList(transactionRecords);
-  if (date == undefined && empId == undefined) {
-    return "No Record Found";
-  }
-  if (date != undefined) {
-    transactionRecords = filterEmpOfDate(beverageRecords, date, empId);
-    return messages.generateQueryMessage(transactionRecords);
-  }
-  transactionRecords = filterEmpBevDetail(beverageRecords, empId);
+  const queryData = { date, empId, beverageName };
+  transactionRecords = filterTransactionList(beverageRecords, queryData);
   return messages.generateQueryMessage(transactionRecords);
 };
 
-exports.filterEmpBevDetail = filterEmpBevDetail;
-exports.filterEmpOfDate = filterEmpOfDate;
-exports.filterDate = filterDate;
+exports.filterTransactionList = filterTransactionList;
 exports.getBeverageRecordList = getBeverageRecordList;
 exports.beverageList = beverageList;
 exports.createUserArgumentsObject = createUserArgumentsObject;
 exports.generateQueryDetails = generateQueryDetails;
+exports.filterList = filterList;
+exports.transactionList = transactionList;
+exports.matchDate = matchDate;

@@ -10,7 +10,7 @@ const createUserArgumentsObject = function(userArguments) {
 
 const beverageList = function(empId) {
   return function(transaction) {
-    transaction["empId"] = empId;
+    transaction.empId = empId;
     return transaction;
   };
 };
@@ -18,7 +18,7 @@ const beverageList = function(empId) {
 const getBeverageRecordList = function(transactionRecords) {
   let beverageRecordList = [];
   for (empBevRecord in transactionRecords) {
-    let empOrders = transactionRecords[empBevRecord]["beverageList"];
+    let empOrders = transactionRecords[empBevRecord].beverageList;
     let empId = empBevRecord;
     let beverageRecord = empOrders.map(beverageList(empId));
     beverageRecordList = beverageRecordList.concat(beverageRecord);
@@ -49,10 +49,9 @@ const filterList = function(transactionRecords, filterBy, filterWith) {
 };
 
 const filterTransactionList = function(transactionRecords, queryData) {
-  console.log(transactionRecords, queryData);
-  const date = queryData["date"];
-  const empId = queryData["empId"];
-  const beverage = queryData["beverageName"];
+  const date = queryData.date;
+  const empId = queryData.empId;
+  const beverage = queryData.beverageName;
   const filterByDate =
     (date && filterList(transactionRecords, date, "date")) ||
     transactionRecords;

@@ -71,7 +71,7 @@ describe("performAction", function() {
         assert.strictEqual(path, "path");
         assert.strictEqual(
           content,
-          '{"25348":{"beverageList":[{"beverageName":"orange","empId":"25348","qty":"1","date":"26/11/2019"}],"count":1}}'
+          '{"25348":{"beverageList":[{"beverageName":"orange","empId":"25348","qty":"1","date":"2019-11-26T00:00:00.000Z"}],"count":1}}'
         );
         assert.strictEqual(encode, "utf8");
         callTimes++;
@@ -87,7 +87,7 @@ describe("performAction", function() {
       }
     };
 
-    const date = "26/11/2019";
+    const date = new Date("2019-11-26");
 
     const actual = utils.performAction(
       "path",
@@ -96,7 +96,7 @@ describe("performAction", function() {
       date
     );
     const expected =
-      "Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n25348,orange,1,26/11/2019";
+      "Transaction Recorded:\nEmployee ID, Beverage, Quantity, Date\n25348,orange,1,2019-11-26T00:00:00.000Z";
     assert.strictEqual(actual, expected);
     assert.strictEqual(callTimes, 1);
   });
@@ -115,7 +115,7 @@ describe("performAction", function() {
       }
     };
 
-    const date = "26/11/2019";
+    const date = "2019-26-11";
 
     const actual = utils.performAction(
       "path",

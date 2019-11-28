@@ -14,14 +14,14 @@ const writeTransaction = function(filePath, contents, writeFile) {
 };
 
 const performAction = function(filePath, fileFunctions, userArguments, date) {
-  const isFileExist = fileFunctions["existsFile"];
-  const parseFile = fileFunctions["readFile"];
+  const isFileExist = fileFunctions.existsFile;
+  const parseFile = fileFunctions.readFile;
   const action = userArguments[0];
   const fileContents = generateFileContents(filePath, parseFile, isFileExist);
   if (userArguments[0] == "--save") {
     let record = saveTransaction(fileContents, userArguments, date);
-    writeTransaction(filePath, record, fileFunctions["writeFile"]);
-    return messages.generateSaveMessage(userArguments, date);
+    writeTransaction(filePath, record, fileFunctions.writeFile);
+    return messages.generateSaveMessage(userArguments, date.toJSON());
   }
   return generateQueryDetails(fileContents, userArguments);
 };

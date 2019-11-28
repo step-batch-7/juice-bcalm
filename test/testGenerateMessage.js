@@ -4,11 +4,16 @@ const assert = require("assert");
 describe("generateQueryMessage", function() {
   it("should generate the query message for which user wants details", function() {
     const transactionRecord = [
-      { beverageName: "orange", qty: "1", empId: "25348", date: "24/11/2019" }
+      {
+        beverageName: "orange",
+        qty: "1",
+        empId: "25348",
+        date: "2019-11-24"
+      }
     ];
     const actual = messages.generateQueryMessage(transactionRecord);
     const expected =
-      "Employee ID, Beverage, Quantity, Date\n25348,orange,1,24/11/2019\nTotal:1Juices";
+      "Employee ID, Beverage, Quantity, Date\n25348,orange,1,2019-11-24\nTotal:1Juices";
     assert.strictEqual(actual, expected);
   });
 });
@@ -48,7 +53,7 @@ describe("generateSaveMessage", function() {
     ];
     const actual = messages.generateSaveMessage(userArguments, "24/11/2019");
     const expected =
-      "Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n11111,Orange,1,24/11/2019";
+      "Transaction Recorded:\nEmployee ID, Beverage, Quantity, Date\n11111,Orange,1,24/11/2019";
     assert.strictEqual(actual, expected);
   });
 });

@@ -12,16 +12,16 @@ describe("saveTransaction", function() {
       "--qty",
       "1"
     ];
-    const actual = transaction.saveTransaction({}, userArgs, "26/11/2019");
+    const date = "2019-11-26";
+    const actual = transaction.saveTransaction({}, userArgs, date);
     const expected = {
       11111: {
         beverageList: [
           {
             beverageName: "Orange ",
-            date: "26/11/2019",
+            date: "2019-11-26",
             empId: "11111",
-            qty: "1",
-            date: "26/11/2019"
+            qty: "1"
           }
         ],
         count: 1

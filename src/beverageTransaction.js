@@ -1,11 +1,12 @@
-const saveTransaction = require("./saveTransaction.js").saveTransaction;
-const generateQueryDetails = require("./query.js").generateQueryDetails;
+const saveTransaction = require("./performOperation.js").saveTransaction;
+const generateQueryDetails = require("./performOperation.js")
+  .generateQueryDetails;
 const messages = require("./generateMessage.js");
 
 const generateFileContents = function(filePath, parseFile, isFileExist) {
   let fileContents =
     isFileExist(filePath, "utf8") && parseFile(filePath, "utf8");
-  return JSON.parse(fileContents) || {};
+  return JSON.parse(fileContents) || [];
 };
 
 const writeTransaction = function(filePath, contents, writeFile) {
@@ -19,7 +20,7 @@ const performAction = function(filePath, fileFunctions, userArguments, date) {
   const action = userArguments[0];
   const fileContents = generateFileContents(filePath, parseFile, isFileExist);
   if (userArguments[0] == "--save") {
-    let record = saveTransaction(fileContents, userArguments, date);
+    const record = saveTransaction(fileContents, userArguments, date);
     writeTransaction(filePath, record, fileFunctions.writeFile);
     return messages.generateSaveMessage(userArguments, date.toJSON());
   }

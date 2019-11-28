@@ -1,5 +1,5 @@
-const performAction = require("./src/beverageTransaction.js").performAction;
 const fs = require("fs");
+const performAction = require("./src/beverageTransaction.js").performAction;
 
 const generateDate = function() {
   return new Date();

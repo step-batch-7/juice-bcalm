@@ -1,5 +1,5 @@
-const utils = require("../src/beverageTransaction.js");
 const assert = require("assert");
+const utils = require("../src/beverageTransaction.js");
 
 describe("generateFileContents", function() {
   it("should give empty object if file is not exists", function() {
@@ -8,14 +8,14 @@ describe("generateFileContents", function() {
       function(arg1, arg2) {
         assert.strictEqual(arg1, "./NoFile");
         assert.strictEqual(arg2, "utf8");
-        return '{"key":"value"}';
+        return "[]";
       },
       function(arg) {
         assert.strictEqual(arg, "./NoFile");
         return false;
       }
     );
-    const expectedValue = {};
+    const expectedValue = [];
     assert.deepStrictEqual(actualValue, expectedValue);
   });
 
@@ -55,7 +55,7 @@ describe("writeTransactions", function() {
 });
 
 describe("performAction", function() {
-  it("should return transaction recorded message when employee save something", function() {
+  it("should give transaction recorded message when employee save something", function() {
     let callTimes = 0;
     const userArguments = [
       "--save",
@@ -71,7 +71,7 @@ describe("performAction", function() {
         assert.strictEqual(path, "path");
         assert.strictEqual(
           content,
-          '{"25348":{"beverageList":[{"beverageName":"orange","empId":"25348","qty":"1","date":"2019-11-26T00:00:00.000Z"}],"count":1}}'
+          '[{"beverageName":"orange","empId":"25348","qty":"1","date":"2019-11-26T00:00:00.000Z"}]'
         );
         assert.strictEqual(encode, "utf8");
         callTimes++;
@@ -79,7 +79,7 @@ describe("performAction", function() {
       readFile: (path, encode) => {
         assert.strictEqual(path, "path");
         assert.strictEqual(encode, "utf8");
-        return "{}";
+        return "[]";
       },
       existsFile: path => {
         assert.strictEqual(path, "path");
@@ -107,7 +107,7 @@ describe("performAction", function() {
       readFile: (path, encode) => {
         assert.strictEqual(path, "path");
         assert.strictEqual(encode, "utf8");
-        return '{"25348":{"beverageList":[]}}';
+        return "[]";
       },
       existsFile: path => {
         assert.strictEqual(path, "path");

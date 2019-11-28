@@ -1,29 +1,22 @@
 const messages = require("./generateMessage.js");
 
+const saveTransaction = function(records, userArguments, date) {
+  const beverageDetail = {
+    beverageName: userArguments[2],
+    empId: userArguments[4],
+    qty: userArguments[6],
+    date: date
+  };
+  records.push(beverageDetail);
+  return records;
+};
+
 const createUserArgumentsObject = function(userArguments) {
   const structuredArgs = {};
   structuredArgs[userArguments[1]] = userArguments[2];
   structuredArgs[userArguments[3]] = userArguments[4];
   structuredArgs[userArguments[5]] = userArguments[6];
   return structuredArgs;
-};
-
-const beverageList = function(empId) {
-  return function(transaction) {
-    transaction.empId = empId;
-    return transaction;
-  };
-};
-
-const getBeverageRecordList = function(transactionRecords) {
-  let beverageRecordList = [];
-  for (empBevRecord in transactionRecords) {
-    let empOrders = transactionRecords[empBevRecord].beverageList;
-    let empId = empBevRecord;
-    let beverageRecord = empOrders.map(beverageList(empId));
-    beverageRecordList = beverageRecordList.concat(beverageRecord);
-  }
-  return beverageRecordList;
 };
 
 const matchDate = function(oldDate, currentDate) {
@@ -68,15 +61,13 @@ const generateQueryDetails = function(transactionRecords, userArguments) {
   const empId = structuredUserArguments["--empId"];
   const date = structuredUserArguments["--date"];
   const beverageName = structuredUserArguments["--beverage"];
-  const beverageRecords = getBeverageRecordList(transactionRecords);
   const queryData = { date, empId, beverageName };
-  transactionRecords = filterTransactionList(beverageRecords, queryData);
+  transactionRecords = filterTransactionList(transactionRecords, queryData);
   return messages.generateQueryMessage(transactionRecords);
 };
 
+exports.saveTransaction = saveTransaction;
 exports.filterTransactionList = filterTransactionList;
-exports.getBeverageRecordList = getBeverageRecordList;
-exports.beverageList = beverageList;
 exports.createUserArgumentsObject = createUserArgumentsObject;
 exports.generateQueryDetails = generateQueryDetails;
 exports.filterList = filterList;

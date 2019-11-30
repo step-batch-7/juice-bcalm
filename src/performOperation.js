@@ -25,7 +25,7 @@ const matchDate = function(oldDate, currentDate) {
   return oldDate == currentDate;
 };
 
-const transactionList = function(filterBy, filterWith) {
+const matchData = function(filterBy, filterWith) {
   return function(transaction) {
     if (filterWith == "date") {
       return matchDate(transaction[filterWith], filterBy);
@@ -36,7 +36,7 @@ const transactionList = function(filterBy, filterWith) {
 
 const filterList = function(transactionRecords, filterBy, filterWith) {
   const filteredList = transactionRecords.filter(
-    transactionList(filterBy, filterWith)
+    matchData(filterBy, filterWith)
   );
   return filteredList;
 };
@@ -71,5 +71,5 @@ exports.filterTransactionList = filterTransactionList;
 exports.createUserArgumentsObject = createUserArgumentsObject;
 exports.generateQueryDetails = generateQueryDetails;
 exports.filterList = filterList;
-exports.transactionList = transactionList;
+exports.matchData = matchData;
 exports.matchDate = matchDate;

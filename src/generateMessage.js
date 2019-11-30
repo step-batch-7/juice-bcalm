@@ -2,6 +2,7 @@ const generateSaveMessage = function(userArguments, date) {
   const empId = userArguments[4];
   const beverageName = userArguments[2];
   const qty = userArguments[6];
+  date = process.env.NOW || date;
   const message = `Transaction Recorded:\n${createHeader()}\n${empId},${beverageName},${qty},${date}`;
   return message;
 };
@@ -21,11 +22,11 @@ const giveBeverageDetails = function(transactionRecords) {
 
 const generateQueryMessage = function(transactionRecords) {
   const header = createHeader();
-  const message = transactionRecords.map(giveBeverageDetails);
+  const message = transactionRecords.map(giveBeverageDetails).join("");
   const count = transactionRecords.reduce(function(c, e) {
     return c + +e.qty;
   }, 0);
-  return `${header}${message}\nTotal:${count}Juices`;
+  return `${header}${message}\nTotal: ${count} Juices`;
 };
 
 exports.createHeader = createHeader;

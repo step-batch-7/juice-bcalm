@@ -1,0 +1,4 @@
+[{"beverageName":"Watermelon","empId":"11111","qty":"1","date":"2019-11-20T05:50:28.267Z"},
+{"beverageName":"Orange","empId":"11111","qty":"1","date":"2019-11-20T05:50:28.267Z"},
+{"beverageName":"papaya","empId":"23458","qty":"2","date":"2019-11-21T00:00:00.000Z"},
+{"beverageName": "Orange","empId":"12345","qty":"1","date":"2019-11-20T05:50:28.267Z"}] 

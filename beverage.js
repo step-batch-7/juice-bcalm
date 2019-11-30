@@ -8,7 +8,7 @@ const generateDate = function() {
 const main = function() {
   const userArguments = process.argv.slice(2);
   const date = generateDate();
-  const filePath = "./consumedList.json";
+  const filePath = process.env.TRANSACTION_DATA || "./consumedList.json";
   const fileFunctions = {
     readFile: fs.readFileSync,
     writeFile: fs.writeFileSync,

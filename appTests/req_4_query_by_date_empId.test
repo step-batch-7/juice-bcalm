@@ -1,0 +1,5 @@
+(export TRANSACTION_DATA="./preset_2_orange_transaction.txt"; node beverage.js --query --date 2019-11-20 --empId 11111)
+Employee ID, Beverage, Quantity, Date
+11111,Watermelon,1,2019-11-20T05:50:28.267Z
+11111,Orange,1,2019-11-20T05:50:28.267Z
+Total: 2 Juices

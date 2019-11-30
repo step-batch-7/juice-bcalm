@@ -12,7 +12,7 @@ describe("generateQueryDetails", function() {
       "25348"
     ]);
     const expected =
-      "Employee ID, Beverage, Quantity, Date\n25348,Orange,2,2019-11-26\nTotal:2Juices";
+      "Employee ID, Beverage, Quantity, Date\n25348,Orange,2,2019-11-26\nTotal: 2 Juices";
     assert.strictEqual(actual, expected);
   });
 
@@ -21,7 +21,7 @@ describe("generateQueryDetails", function() {
       [],
       ["--operation", "empId", "25348"]
     );
-    const expected = "Employee ID, Beverage, Quantity, Date\nTotal:0Juices";
+    const expected = "Employee ID, Beverage, Quantity, Date\nTotal: 0 Juices";
     assert.strictEqual(actual, expected);
   });
 
@@ -41,7 +41,7 @@ describe("generateQueryDetails", function() {
       userArgs
     );
     const expected =
-      "Employee ID, Beverage, Quantity, Date\n25348,Orange,2,2019-11-27\nTotal:2Juices";
+      "Employee ID, Beverage, Quantity, Date\n25348,Orange,2,2019-11-27\nTotal: 2 Juices";
     assert.deepStrictEqual(actual, expected);
   });
 
@@ -60,7 +60,7 @@ describe("generateQueryDetails", function() {
       transactionsRecords,
       userArgs
     );
-    const expected = "Employee ID, Beverage, Quantity, Date\nTotal:0Juices";
+    const expected = "Employee ID, Beverage, Quantity, Date\nTotal: 0 Juices";
     assert.deepStrictEqual(actual, expected);
   });
 
@@ -86,7 +86,7 @@ describe("generateQueryDetails", function() {
       userArgs
     );
     const expected =
-      "Employee ID, Beverage, Quantity, Date\n25348,Orange,2,2019-11-27\nTotal:2Juices";
+      "Employee ID, Beverage, Quantity, Date\n25348,Orange,2,2019-11-27\nTotal: 2 Juices";
     assert.deepStrictEqual(actual, expected);
   });
 
@@ -106,7 +106,7 @@ describe("generateQueryDetails", function() {
       userArgs
     );
     const expected =
-      "Employee ID, Beverage, Quantity, Date\n25348,Orange,2,2019-11-27\nTotal:2Juices";
+      "Employee ID, Beverage, Quantity, Date\n25348,Orange,2,2019-11-27\nTotal: 2 Juices";
     assert.deepStrictEqual(actual, expected);
   });
 });

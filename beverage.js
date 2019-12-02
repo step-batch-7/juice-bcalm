@@ -1,5 +1,6 @@
 const fs = require("fs");
 const performAction = require("./src/beverageTransaction.js").performAction;
+const { getPath, getDate } = require("./src/config.js");
 
 const generateDate = function() {
   return new Date();
@@ -7,8 +8,8 @@ const generateDate = function() {
 
 const main = function() {
   const userArguments = process.argv.slice(2);
-  const date = generateDate();
-  const filePath = process.env.TRANSACTION_DATA || "./consumedList.json";
+  const date = getDate(process.env)();
+  const filePath = getPath(process.env);
   const fileFunctions = {
     readFile: fs.readFileSync,
     writeFile: fs.writeFileSync,

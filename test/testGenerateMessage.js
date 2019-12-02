@@ -13,7 +13,7 @@ describe("generateQueryMessage", function() {
     ];
     const actual = messages.generateQueryMessage(transactionRecord);
     const expected =
-      "Employee ID, Beverage, Quantity, Date\n25348,orange,1,2019-11-24\nTotal: 1 Juices";
+      "Employee ID, Beverage, Quantity, Date\n25348,orange,1,2019-11-24\nTotal: 1 Juice";
     assert.strictEqual(actual, expected);
   });
 });

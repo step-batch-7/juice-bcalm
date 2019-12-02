@@ -13,5 +13,8 @@
     "nyc": "^14.1.1",
     "prettier": "^1.19.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "chai": "^4.2.0",
+    "chalk": "^3.0.0"
+  }
 }
